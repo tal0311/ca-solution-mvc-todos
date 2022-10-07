@@ -25,10 +25,8 @@ function renderTodos() {
   } else {
     strHTMLs = todos.map(
       (todo) =>
-        `<li class="${todo.isDone ? "done" : ""}" onclick="onToggleTodo('${
-          todo.id
-        }')">
-            ${todo.txt}
+        `<li class="${todo.isDone ? "done" : ""}" 
+        onclick="onToggleTodo('${todo.id}')">${todo.txt}
             <button onclick="onRemoveTodo(event, '${todo.id}')">x</button>
             <p class=" ${todo.importance < 3 ? "" : "important"}">${
           todo.importance

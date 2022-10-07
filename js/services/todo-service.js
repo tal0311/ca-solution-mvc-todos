@@ -5,7 +5,7 @@ var gTodos;
 var gFilterBy = "ALL";
 
 var gSortBy = {
-  val: "all",
+  val: "",
   des: 1
 };
 
@@ -25,12 +25,23 @@ function _filterTodos(todos, filterBy) {
 function _sortTodos(todos, sortBy) {
   switch (sortBy.val) {
     case "txt":
-      console.log(sortBy);
-
+      sortBy.des === -1
+        ? todos.sort((a, b) => a[sortBy.val].localeCompare(b.txt))
+        : todos.sort((a, b) => b[sortBy.val].localeCompare(a.txt));
+      break;
+    case "importance":
+      todos.sort((a, b) =>
+        b[sortBy.val] - a[sortBy.val] ? sortBy.des : gSortBy.des * -gSortBy.des
+      );
+      break;
+    case "createdAt":
+      todos.sort((a, b) =>
+        a[sortBy.val] - b[sortBy.val] ? sortBy.des : gSortBy.des * -gSortBy.des
+      );
       break;
 
     default:
-      break;
+      return;
   }
 }
 function removeTodo(todoId) {
@@ -68,12 +79,10 @@ function setFilter(filterBy) {
 
 function setSortedBy(val) {
   gSortBy.val = val;
-  console.log(gSortBy);
 }
 
 function sortDirection() {
   gSortBy.des = gSortBy.des === 1 ? -1 : 1;
-  console.log(gSortBy);
 }
 function createTodos() {
   console.log("creating todos");
