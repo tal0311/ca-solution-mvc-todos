@@ -4,24 +4,35 @@ const STORAGE_KEY = "todosDB";
 var gTodos;
 var gFilterBy = "ALL";
 
-var gSortBy = "all";
+var gSortBy = {
+  val: "all",
+  des: 1
+};
 
 function getTodosForDisplay() {
-  const todos = gTodos;
+  let todos = gTodos;
   todos = _filterTodos(todos, gFilterBy);
-  // return gTodos.filter(
-  //   (todo) =>
-  //     (todo.isDone && gFilterBy === "DONE") ||
-  //     (!todo.isDone && gFilterBy === "ACTIVE")
-  // );
+  _sortTodos(todos, gSortBy);
+  console.log(todos);
+
   return todos;
 }
 
 function _filterTodos(todos, filterBy) {
-  if (gFilterBy === "All") return todos;
+  if (gFilterBy === "ALL") return todos;
   return todos.filter((todo) => todo.isDone === filterBy);
 }
-function _sortTodos() {}
+function _sortTodos(todos, sortBy) {
+  switch (sortBy.val) {
+    case "txt":
+      console.log(sortBy);
+
+      break;
+
+    default:
+      break;
+  }
+}
 function removeTodo(todoId) {
   const idx = gTodos.findIndex((todo) => todo.id === todoId);
   gTodos.splice(idx, 1);
@@ -50,16 +61,20 @@ function getActiveTodosCount() {
 }
 
 function setFilter(filterBy) {
+  if (filterBy !== "ALL") filterBy = JSON.parse(filterBy);
+
   gFilterBy = filterBy;
 }
 
 function setSortedBy(val) {
-  //!val to lower case
-  gSortBy = val;
-  console.log(val);
-  getTodosForDisplay();
+  gSortBy.val = val;
+  console.log(gSortBy);
 }
 
+function sortDirection() {
+  gSortBy.des = gSortBy.des === 1 ? -1 : 1;
+  console.log(gSortBy);
+}
 function createTodos() {
   console.log("creating todos");
 
@@ -67,7 +82,7 @@ function createTodos() {
   if (!todos || !todos.length) {
     todos.push(
       _createTodo("fisrt task", 1),
-      _createTodo("second task", 2),
+      _createTodo("second task", 2, true),
       _createTodo("thired task", 2)
     );
     console.log(todos);

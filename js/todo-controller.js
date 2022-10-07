@@ -16,7 +16,7 @@ function onRemoveTodo(ev, todoId) {
 
 function renderTodos() {
   let todos = getTodosForDisplay();
-  console.log(todos);
+  console.log("render", todos);
 
   var strHTMLs = "";
   if (!todos.length) {
@@ -79,7 +79,12 @@ function onSetFilter(filterBy) {
 
 function onSortBy(val) {
   console.log(val);
+
   setSortedBy(val);
+  renderTodos();
+}
+function onSortDirection() {
+  sortDirection();
   renderTodos();
 }
 
