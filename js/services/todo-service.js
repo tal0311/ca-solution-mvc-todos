@@ -29,18 +29,10 @@ function _sortTodos(todos, sortBy) {
         ? todos.sort((a, b) => a[sortBy.val].localeCompare(b.txt))
         : todos.sort((a, b) => b[sortBy.val].localeCompare(a.txt));
       break;
-    case "importance":
+    default:
       todos.sort((a, b) =>
         b[sortBy.val] - a[sortBy.val] ? sortBy.des : gSortBy.des * -gSortBy.des
       );
-      break;
-    case "createdAt":
-      todos.sort((a, b) =>
-        a[sortBy.val] - b[sortBy.val] ? sortBy.des : gSortBy.des * -gSortBy.des
-      );
-      break;
-
-    default:
       return;
   }
 }

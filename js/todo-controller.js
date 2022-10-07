@@ -23,17 +23,17 @@ function renderTodos() {
     strHTMLs = `<li class="no-todos">add your Todos </li>`;
     document.querySelector(".todo-list").innerHTML = strHTMLs;
   } else {
-    strHTMLs = todos.map(
-      (todo) =>
-        `<li class="${todo.isDone ? "done" : ""}" 
+    strHTMLs = todos.map((todo) => {
+      const time = geDateTime(todo.createdAt);
+      return `<li class="${todo.isDone ? "done" : ""}" 
         onclick="onToggleTodo('${todo.id}')">${todo.txt}
-            <button onclick="onRemoveTodo(event, '${todo.id}')">x</button>
-            <p class=" ${todo.importance < 3 ? "" : "important"}">${
-          todo.importance
-        }</p>
-            </li>
-            <small>${todo.createdAt}</small>`
-    );
+        <button onclick="onRemoveTodo(event, '${todo.id}')">x</button>
+        <p class=" ${todo.importance < 3 ? "" : "important"}">${
+        todo.importance
+      }</p>
+        </li>
+        <small>${time.monthDay} - ${time.hours}</small>`;
+    });
     document.querySelector(".todo-list").innerHTML = strHTMLs.join("");
   }
 
@@ -91,4 +91,13 @@ function setUserMsg(msg) {
   if (!msg) return;
   document.querySelector(".msg-txt").innerText = msg || "";
   setTimeout(setUserMsg, 2000);
+}
+
+function geDateTime(timeStemp) {
+  let time = new Date(timeStemp);
+
+  return {
+    monthDay: time.toString().split(" ").slice(1, 3),
+    hours: time.toString().split(" ")[4]
+  };
 }
