@@ -13,8 +13,6 @@ function getTodosForDisplay() {
   let todos = gTodos;
   todos = _filterTodos(todos, gFilterBy);
   _sortTodos(todos, gSortBy);
-  console.log(todos);
-
   return todos;
 }
 

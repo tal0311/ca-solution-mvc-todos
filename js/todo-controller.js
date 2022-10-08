@@ -1,8 +1,11 @@
 "use strict";
 
 function onInit() {
+  renderTitle("Loading your tasks");
+  setUserMsg("Loading your tasks");
   createTodos();
-  renderTodos();
+  // setTimeout(renderTodos, 800); //uncomment to see loading status
+  // renderTodos();
 }
 
 function onRemoveTodo(ev, todoId) {
@@ -14,20 +17,21 @@ function onRemoveTodo(ev, todoId) {
   renderTodos();
 }
 
+function renderTitle(title = "Todos MVC") {
+  document.querySelector("h1").innerText = title;
+}
 function renderTodos() {
   let todos = getTodosForDisplay();
-  console.log("render", todos);
+  renderTitle();
 
-  var strHTMLs = "";
   if (!todos.length) {
-    strHTMLs = `<li class="no-todos">add your Todos </li>`;
-    document.querySelector(".todo-list").innerHTML = strHTMLs;
-  } else {
-    strHTMLs = todos.map((todo) => {
-      const time = geDateTime(todo.createdAt);
-      return `<li class="flex a-center ${
-        todo.isDone ? "done todo-preview" : "todo-preview"
-      }" 
+    renderTitle("Add your first task");
+  }
+  const strHTMLs = todos.map((todo) => {
+    const time = geDateTime(todo.createdAt);
+    return `<li class="flex a-center ${
+      todo.isDone ? "done todo-preview" : "todo-preview"
+    }" 
         onclick="onToggleTodo('${todo.id}')">
      <p>${todo.txt}</p>
         
@@ -43,10 +47,11 @@ function renderTodos() {
           </li>
           <small>${time.monthDay} - ${time.hours}</small>
         `;
-    });
-    document.querySelector(".todo-list").innerHTML = strHTMLs.join("");
-  }
-
+  });
+  document.querySelector(".todo-list").innerHTML = strHTMLs.join("");
+  renderStats();
+}
+function renderStats() {
   document.querySelector(".todos-total-count").innerText = getTodosCount();
   document.querySelector(
     ".todos-active-count"
