@@ -25,14 +25,24 @@ function renderTodos() {
   } else {
     strHTMLs = todos.map((todo) => {
       const time = geDateTime(todo.createdAt);
-      return `<li class="${todo.isDone ? "done" : ""}" 
-        onclick="onToggleTodo('${todo.id}')">${todo.txt}
-        <button onclick="onRemoveTodo(event, '${todo.id}')">x</button>
-        <p class=" ${todo.importance < 3 ? "" : "important"}">${
-        todo.importance
-      }</p>
-        </li>
-        <small>${time.monthDay} - ${time.hours}</small>`;
+      return `<li class="flex a-center ${
+        todo.isDone ? "done todo-preview" : "todo-preview"
+      }" 
+        onclick="onToggleTodo('${todo.id}')">
+     <p>${todo.txt}</p>
+        
+       
+        <span class=" ${
+          todo.importance < 3 ? "impostance" : "impostance important"
+        }">${todo.importance}</span>
+          <section class="action-container d-none">
+           <button>&#8593;</button>
+           <button>&#8595;</button>
+           <button onclick="onRemoveTodo(event, '${todo.id}')">x</button>
+          </section>
+          </li>
+          <small>${time.monthDay} - ${time.hours}</small>
+        `;
     });
     document.querySelector(".todo-list").innerHTML = strHTMLs.join("");
   }
@@ -65,8 +75,7 @@ function onAddTodo() {
   };
 
   addTodo(todoToAdd);
-
-  elTxt.value = "";
+  _cleanInputs();
   renderTodos();
 }
 
@@ -100,4 +109,9 @@ function geDateTime(timeStemp) {
     monthDay: time.toString().split(" ").slice(1, 3),
     hours: time.toString().split(" ")[4]
   };
+}
+
+function _cleanInputs() {
+  document.querySelector("input[name=todoTxt]").value = "";
+  document.querySelector("input[name=importance]").value = "";
 }
