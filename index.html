@@ -11,37 +11,46 @@
     <h1>Todos MVC</h1>
 
     <section class="app-container flex">
-      <section class="todo-filter">
+      <section class="todo-filter flex">
         <select onchange="onSetFilter(this.value)">
           <option value="ALL">All</option>
           <option value="true">Done</option>
           <option value="false">Active</option>
         </select>
-        <select onchange="onSortBy(this.value)">
-          <option value="">sort by</option>
-          <option value="importance">Importance</option>
-          <option value="createdAt">Time</option>
-          <option value="txt">Text</option>
-        </select>
-        <button onclick="onSortDirection()">&#8645;</button>
+        <section class="sort-container">
+          <select onchange="onSortBy(this.value)">
+            <option value="">sort by</option>
+            <option value="importance">Importance</option>
+            <option value="createdAt">Time</option>
+            <option value="txt">Text</option>
+          </select>
+          <button onclick="onSortDirection()">&#8645;</button>
+        </section>
       </section>
       <ul class="todo-list clean-list"></ul>
-      <input type="text" name="todoTxt" placeholder="What needs to be done?" />
-      <input
-        type="number"
-        max="3"
-        min="1"
-        name="importance"
-        placeholder="importance"
-      />
-      <button onclick="onAddTodo()">Add</button>
+      <section class="add-todo-container flex">
+        <input
+          type="text"
+          name="todoTxt"
+          placeholder="What needs to be done?"
+        />
+        <input
+          type="number"
+          max="3"
+          min="1"
+          name="importance"
+          placeholder="importance"
+        />
+        <button class="add-btn" onclick="onAddTodo()">Add</button>
+      </section>
       <section class="todo-stat">
-        Total Todos:
+        <span>Total Todos:</span>
         <span class="todos-total-count">3</span>
-        Active:
+        <span>Active:</span>
         <span class="todos-active-count">2</span>
       </section>
     </section>
+
     <section class="user-msg">
       <h4 class="msg-txt">user msg</h4>
     </section>

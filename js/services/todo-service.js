@@ -35,22 +35,36 @@ function _sortTodos(todos, sortBy) {
   }
 }
 function removeTodo(todoId) {
-  const idx = gTodos.findIndex((todo) => todo.id === todoId);
+  const idx = getTodoIdx(todoId);
   gTodos.splice(idx, 1);
   _saveTodosToStorage();
 }
 
 function toggleTodo(todoId) {
-  var todo = gTodos.find((todo) => todo.id === todoId);
+  var todo = getTodoById(todoId);
   todo.isDone = !todo.isDone;
-
   _saveTodosToStorage();
+  return todo;
 }
 
+function changeOrder(todoId, val) {
+  const idx = getTodoIdx(todoId);
+  const todo = gTodos.splice(idx, 1)[0];
+  gTodos.splice(idx + val, 0, todo);
+}
+
+function getTodoIdx(todoId) {
+  return gTodos.findIndex((todo) => todo.id === todoId);
+}
+
+function getTodoById(todoId) {
+  return gTodos.find((todo) => todo.id === todoId);
+}
 function addTodo({ txt, importance }) {
   const todo = _createTodo(txt, importance);
   gTodos.unshift(todo);
   _saveTodosToStorage();
+  return todo;
 }
 
 function getTodosCount() {
@@ -75,16 +89,15 @@ function sortDirection() {
   gSortBy.des = gSortBy.des === 1 ? -1 : 1;
 }
 function createTodos() {
-  console.log("creating todos");
+  console.log("%c Creating todos", "color:lightgreen");
 
   const todos = _loadFromStorage(STORAGE_KEY) || [];
   if (!todos || !todos.length) {
     todos.push(
-      _createTodo("fisrt task", 1),
-      _createTodo("second task", 2, true),
-      _createTodo("thired task", 2)
+      _createTodo("learn JS", 1),
+      _createTodo("Leran Css", 2, true),
+      _createTodo("Learn HTML", 2)
     );
-    console.log(todos);
   }
   gTodos = todos;
   _saveTodosToStorage();
@@ -119,5 +132,3 @@ function _loadFromStorage() {
 function _saveTodosToStorage() {
   saveToStorage(STORAGE_KEY, gTodos);
 }
-
-// console.log(gTodos.sort((a, b) => (a.txt > b.txt ? 1 : -1)));

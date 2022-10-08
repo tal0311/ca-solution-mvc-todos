@@ -5,21 +5,14 @@ function onInit() {
   setUserMsg("Loading your tasks");
   createTodos();
   // setTimeout(renderTodos, 800); //uncomment to see loading status
-  // renderTodos();
-}
-
-function onRemoveTodo(ev, todoId) {
-  ev.stopPropagation();
-  //todo: add confirm
-  console.log("Removing Todo", todoId);
-
-  removeTodo(todoId);
   renderTodos();
 }
 
+// render functions
 function renderTitle(title = "Todos MVC") {
   document.querySelector("h1").innerText = title;
 }
+
 function renderTodos() {
   let todos = getTodosForDisplay();
   renderTitle();
@@ -36,12 +29,16 @@ function renderTodos() {
      <p>${todo.txt}</p>
         
        
-        <span class=" ${
+        <span title="Priority" class=" ${
           todo.importance < 3 ? "impostance" : "impostance important"
         }">${todo.importance}</span>
           <section class="action-container d-none">
-           <button>&#8593;</button>
-           <button>&#8595;</button>
+           <button onclick="onChangeOrder(event ,'${
+             todo.id
+           }', 1)">&#8593;</button>
+           <button onclick="onChangeOrder(event,'${
+             todo.id
+           }', -1)">&#8595;</button>
            <button onclick="onRemoveTodo(event, '${todo.id}')">x</button>
           </section>
           </li>
@@ -51,6 +48,7 @@ function renderTodos() {
   document.querySelector(".todo-list").innerHTML = strHTMLs.join("");
   renderStats();
 }
+
 function renderStats() {
   document.querySelector(".todos-total-count").innerText = getTodosCount();
   document.querySelector(
@@ -58,10 +56,22 @@ function renderStats() {
   ).innerText = getActiveTodosCount();
 }
 
-function onToggleTodo(todoId) {
-  console.log("Toggling", todoId);
-  toggleTodo(todoId);
+// CRUD functions
+function onRemoveTodo(ev, todoId) {
+  ev.stopPropagation();
+  //todo: add confirm
+  if (!confirm("Are you sure?")) return;
+  removeTodo(todoId);
+  setUserMsg("Removing todo");
+  renderTodos();
+}
 
+function onToggleTodo(todoId) {
+  const todo = toggleTodo(todoId);
+  const msg = todo.isDone
+    ? "Good job keep going"
+    : "Keep working on these todos";
+  setUserMsg(msg);
   renderTodos();
 }
 
@@ -71,7 +81,7 @@ function onAddTodo() {
     +document.querySelector("input[name=importance]").value || 1;
 
   if (!txt) {
-    setUserMsg("A task must have a title");
+    setUserMsg("A todo must have a title");
     return;
   }
   const todoToAdd = {
@@ -79,27 +89,36 @@ function onAddTodo() {
     importance
   };
 
-  addTodo(todoToAdd);
+  const todo = addTodo(todoToAdd);
+  let priority = todo.importance > 2 ? "high" : "normal";
+  setUserMsg(`A ${priority} priority todo was added`);
   _cleanInputs();
   renderTodos();
 }
 
+// filter/sort functions
 function onSetFilter(filterBy) {
   setFilter(filterBy);
   renderTodos();
 }
 
 function onSortBy(val) {
-  console.log(val);
-
   setSortedBy(val);
   renderTodos();
 }
+
 function onSortDirection() {
   sortDirection();
   renderTodos();
 }
 
+function onChangeOrder(ev, todoId, val) {
+  ev.stopPropagation();
+  changeOrder(todoId, val);
+  renderTodos();
+}
+
+// ui util functions
 function setUserMsg(msg) {
   document.querySelector(".user-msg").classList.toggle("open");
   if (!msg) return;

@@ -1,9 +1,8 @@
 * {
   box-sizing: border-box;
 }
-
 :root {
-  --clrDone: #c3c3c3;
+  --clrDone: #b4b4b4;
   --clr1: rgb(179, 67, 179);
 }
 html {
@@ -16,15 +15,39 @@ body {
   justify-content: center;
   align-items: center;
   height: 95vh;
-  widows: 95vw;
+  width: 95vw;
   text-align: center;
 }
 h1 {
   color: var(--clr1);
   font-size: 100px;
-  opacity: 0.2;
+  opacity: 0.1;
   position: absolute;
+  z-index: -1;
   /* transform: translateY(-100%); */
+}
+input,
+select {
+  border: none;
+  border-bottom: 1px solid var(--clr1);
+}
+input:focus,
+select:focus {
+  border: none;
+  outline: 1px solid var(--clr1);
+}
+input:focus::placeholder {
+  transition: all 0.2s ease-in-out;
+  transform: translateY(-150%);
+  opacity: 0;
+}
+button {
+  cursor: pointer;
+  background: none;
+  border: 1px solid var(--clr1);
+  padding: 0.5em;
+  border-radius: 1em;
+  color: #333;
 }
 .user-msg {
   position: fixed;
@@ -38,8 +61,10 @@ h1 {
   color: #f3f3f3;
 }
 
+.todo-filter {
+  justify-content: space-between;
+}
 .app-container {
-  /* background: red; */
   max-width: 100%;
 }
 .app-container.flex {
@@ -47,14 +72,16 @@ h1 {
 }
 .app-container > *:not(.todo-list) {
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .todo-list {
   min-height: 50vh;
+  min-width: 50vw;
 }
 .todo-preview {
   cursor: pointer;
+  justify-content: space-between;
 }
 .todo-preview:hover .action-container {
   display: block;
@@ -82,6 +109,25 @@ ul small {
 .todo-preview.done ~ small {
   color: var(--clrDone);
 }
+
+.add-todo-container {
+  /* background: chartreuse; */
+  width: 100%;
+  flex-direction: column;
+}
+.add-todo-container > * {
+  padding: 0.5em;
+  margin: 0 0 1em 0;
+  width: 100%;
+}
+
+.add-todo-container .add-btn {
+  padding: 0.5em 0;
+  border-radius: 0.8em;
+  border: 1px solid var(--clr1);
+  width: 25%;
+}
+
 /* helper functions */
 .clean-list {
   list-style: none;
