@@ -130,7 +130,7 @@ function geDateTime(timeStemp) {
   let time = new Date(timeStemp);
 
   return {
-    monthDay: time.toString().split(" ").slice(1, 3),
+    monthDay: time.toString().split(" ").slice(1, 3).join(' '),
     hours: time.toString().split(" ")[4]
   };
 }
